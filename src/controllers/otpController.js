@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const otpModel = require('../models/otpModel');
+const otpGen = require("otp-generator");
 const { isValidEmail } = require('../middlewares/validator');
 
 // ============================ Generate OTP ============================
@@ -16,20 +17,25 @@ const generateOTP = async (req, res) => {
             return res.status(400).send({ status: false, message: "Invalid email" });
         };
 
-        const otp = Math.floor(100000 + Math.random() * 900000);
-
+        const otp = otpGen.generate(6, {
+            digits: true,
+            upperCaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+          });
+          
         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
             secure: false,
             auth: {
-                user: 'luckybigwings@gmail.com',
-                pass: 'zbfsaovhqrklzzes'
+                user: process.env.SMTP_MAIL,
+                pass: process.env.SMTP_PASSWORD
             }
         });
 
         const mailOptions = {
-            from: 'luckybigwings@gmail.com',
+            from: process.env.SMTP_MAIL,
             to: data.email,
             subject: 'OTP Verification Code',
             text: `Your OTP code is ${otp}. Please enter it to verify your account.`

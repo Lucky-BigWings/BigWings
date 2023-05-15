@@ -48,17 +48,17 @@ const newAdmin = async (req, res) => {
         // const otp = Math.floor(100000 + Math.random() * 900000)
 
         // const transporter = nodemailer.createTransport({
-        //     host: 'smtp.gmail.com',
-        //     port: 587,
+        //     host: process.env.SMTP_HOST,
+        //     port: process.env.SMTP_PORT,
         //     secure: false, // true for 465, false for other ports
         //     auth: {
-        //         user: 'luckybigwings@gmail.com',
-        //         pass: 'zbfsaovhqrklzzes'
+        //         user: process.env.SMTP_MAIL
+        //         pass: process.env.SMTP_PASSWORD
         //     }
         // });
 
         // const mailOptions = {
-        //     from: 'luckybigwings@gmail.com',
+        //     from: 'process.env.SMTP_MAIL,
         //     to: data.email,
         //     subject: 'OTP Verification Code',
         //     text: `Your OTP code is ${otp}. Please enter it to verify your account.`
@@ -124,7 +124,7 @@ const adminLogin = async (req, res) => {
 
             return res
                 .status(200)
-                // .cookie('token', token, { expires: new Date(Date.now() + 86400000) })       // expires in 1 day
+                .cookie('token', token, { expires: new Date(Date.now() + 86400000) })       // expires in 1 day
                 .send({ status: true, message: token });
         } else {
             return res.status(404).send({ status: true, message: "user not found" });

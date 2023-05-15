@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const driverSchema = new mongoose.Schema({
     full_name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     DOB: {
         type: Date,
@@ -12,16 +13,18 @@ const driverSchema = new mongoose.Schema({
     phone: {
         type: Number,
         required: true,
-        unique: true
+        // unique: true
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        // unique: true,
+        trim: true
     },
     address: {
         type: String,
-        required: true
+        required: true,
+        trum: true
     },
     country: {
         type: String,
@@ -30,7 +33,7 @@ const driverSchema = new mongoose.Schema({
     driving_license_no: {
         type: String,
         required: true,
-        unique: true
+        // unique: true
     },
     joining_date: {
         type: Date,
@@ -40,6 +43,10 @@ const driverSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ["Full-time", "Part-time", "Contract"]
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     },
     // license_exp_date: {
     //     type: Date,
@@ -69,4 +76,4 @@ const driverSchema = new mongoose.Schema({
     // },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Driver', driverSchema)
+module.exports = mongoose.model('Driver', driverSchema);

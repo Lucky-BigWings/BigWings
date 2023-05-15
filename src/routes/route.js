@@ -4,10 +4,11 @@ const router = express.Router();
 
 const { generateOTP, verifyOTP } = require('../controllers/otpController');
 const { newAdmin, adminLogin, updateAdmin, forgotPassword, adminLogout } = require('../controllers/adminController');
-const { newDriver, fetchDriver } = require('../controllers/driverController');
+const { newDriver, fetchDriver, uodateDriver, deleteDriver } = require('../controllers/driverController');
+const { newTruck, fetchTruck, updateTruck, deleteTruck } = require('../controllers/truckController');
 const { adminAuthentication, adminAuthorization } = require('../middlewares/auth');
 
-// =================== user APIS ================
+// =================== admin APIS ================
 
 router.post('/otp', generateOTP);
 router.post('/verifyOTP', verifyOTP);
@@ -20,6 +21,15 @@ router.get('/logout', adminLogout);
 // =================== driver APIS =================
 
 router.post('/driver', adminAuthentication, newDriver);
-router.get('/driver', fetchDriver);
+router.get('/driver', adminAuthentication, fetchDriver);
+router.put('/driver/:driverId', adminAuthentication, uodateDriver);
+router.delete('/driver/:driverId', adminAuthentication, deleteDriver)
+
+// =================== truck APIS =================
+
+router.post('/truck', adminAuthentication, newTruck);
+router.get('/truck', adminAuthentication, fetchTruck);
+router.put('/truck/:truckId', adminAuthentication, updateTruck);
+router.delete('/truck/:truckId', adminAuthentication, deleteTruck);
 
 module.exports = router;
